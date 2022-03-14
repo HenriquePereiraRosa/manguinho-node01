@@ -1,9 +1,10 @@
+import { HttpRequest, HttpResponse } from "../../protocols/http";
 
 export class SignUpController {
- handle (httpRequest: any) :any {
-   return {
-     statusCode: 400,
-     body: new Error('Missing param: name')
-   }
+ handle(httpRequest: HttpRequest): HttpResponse {
+  return {
+   statusCode: 400,
+   body: new Error('Missing param: name')
+  }
  }
 }

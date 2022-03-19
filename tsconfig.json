@@ -4,6 +4,9 @@
         "module": "commonjs",
         "target": "es2019",
         "esModuleInterop": true,
-        "allowJs": true
-    }
+        "allowJs": true,
+				"forceConsistentCasingInFileNames": true, // imports have to match in CamelCase including
+				"sourceMap": true, // generate debug source map for breakpoint purpose
+    },
+		"include": ["src"]
 }

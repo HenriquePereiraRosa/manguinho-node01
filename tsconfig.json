@@ -13,6 +13,7 @@
 		// "strictPropertyInitialization": true,
 		// "noImplicitAny": true, // doesn't infer any implicitly
 		"strict": true, // group all other sctrict rules in one rule
+    "removeComments": true,
 		"baseUrl": "src",
 		"paths": {
 			"@/*": ["*"],

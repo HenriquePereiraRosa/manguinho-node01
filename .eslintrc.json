@@ -24,6 +24,6 @@
         "linebreak-style": [
             "error",
             "unix"
-        ],
+        ]
     }
 }

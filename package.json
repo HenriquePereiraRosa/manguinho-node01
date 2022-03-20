@@ -4,8 +4,11 @@
   "author": "Henrique P. Rosa",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "build": "rimraf dist && tsc",
+    "clean": "rimraf dist",
+    "test": "jest --no-cache --runInBand",
+    "test:watch": "npm test -- --watch",
+    "build": "npm run clean && tsc",
+    "build:prod": "npm run clean && tsc  -p tsconfig-prod.json",
 		"start": "npm run build && node dist/main/api"
   },
   "dependencies": {

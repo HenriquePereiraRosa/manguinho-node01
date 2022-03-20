@@ -1,8 +1,12 @@
 import { SignUpController } from './signup'
 
+const makeSut = (): SignUpController => {
+	return new SignUpController()
+}
+
 describe('Signup Controller', () => {
  it('Should return 400 if no email is provided', () => {
-  const sut = new SignUpController()
+  const sut = makeSut()
   const httpRequest = {
    body: {
     pwd: '1234@56',
@@ -17,7 +21,7 @@ describe('Signup Controller', () => {
 
 describe('Signup Controller', () => {
  it('Should return 400 if no pwd is provided', () => {
-  const sut = new SignUpController()
+  const sut = makeSut()
   const httpRequest = {
    body: {
     email: 'any_email@server.com',
@@ -32,7 +36,7 @@ describe('Signup Controller', () => {
 
 describe('Signup Controller', () => {
  it('Should return 400 if no pwdConfirmation is provided', () => {
-  const sut = new SignUpController()
+  const sut = makeSut()
   const httpRequest = {
    body: {
     email: 'any_email@server.com',
@@ -47,7 +51,7 @@ describe('Signup Controller', () => {
 
 describe('Signup Controller', () => {
  it('Should return 200 if all params are provided', () => {
-  const sut = new SignUpController()
+  const sut = makeSut()
   const httpRequest = {
    body: {
     email: 'any_email@server.com',

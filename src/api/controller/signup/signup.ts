@@ -1,20 +1,29 @@
+import { InvalidParamError } from "@/api/errors/invalid-params-error";
 import { badRequest } from "@/api/helpers/http-helpers";
 import { Controller } from "@/api/protocols/controller";
-import { MissingParamError } from "../../erros/missing-params-error";
+import { EmailValidator } from "@/api/protocols/email-validator";
+import { MissingParamError } from "../../errors/missing-params-error";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 
 export class SignUpController implements Controller {
-	exec(httpRequest: HttpRequest): HttpResponse {
-		const { email, pwd, pwdConfirmation } = httpRequest.body;
 
-		if (!email) {
-			return badRequest(new MissingParamError('email'))
+	constructor(
+		private readonly emailValidator: EmailValidator
+	) {}
+
+
+	exec(req: HttpRequest): HttpResponse {
+		const { email, pwd, pwdConfirmation } = req.body;
+		const requiredFields = ['email', 'pwd', 'pwdConfirmation']
+		
+		for(const field of requiredFields) {
+			if (!req.body[field]) {
+				return badRequest(new MissingParamError(field))
+			}
 		}
-		if (!pwd) {
-			return badRequest(new MissingParamError('pwd'))
-		}
-		if (!pwdConfirmation) {
-			return badRequest(new MissingParamError('pwdConfirmation'))
+
+		if(!this.emailValidator.isValid(email)) {
+			return badRequest(new InvalidParamError('email'))
 		}
 
 		return {

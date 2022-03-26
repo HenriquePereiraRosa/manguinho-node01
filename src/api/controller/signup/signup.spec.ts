@@ -92,6 +92,23 @@ describe('Signup Controller', () => {
 
 
 describe('Signup Controller', () => {
+	it('Should call EmailValidator with correct email', () => {
+		const { sut, emailValidatorStub } = makeSut()
+		const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid') 
+		const httpRequest = {
+			body: {
+				email: 'correct_email@server.com',
+				pwd: '1234@56',
+				pwdConfirmation: '1234@56',
+			}
+		}
+		const httpResponse = sut.exec(httpRequest)
+		expect(isValidSpy).toHaveBeenCalledWith('correct_email@server.com')
+	})
+})
+
+
+describe('Signup Controller', () => {
 	it('Should return 200 if all params are provided', () => {
 		const { sut } = makeSut()
 		const httpRequest = {

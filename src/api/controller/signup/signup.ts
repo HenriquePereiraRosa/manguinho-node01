@@ -1,6 +1,5 @@
 import { InvalidParamError } from "@/api/errors/invalid-params-error";
-import { ServerError } from "@/api/errors/server-error";
-import { badRequest } from "@/api/helpers/http-helpers";
+import { badRequest, serverError } from "@/api/helpers/http-helpers";
 import { Controller } from "@/api/protocols/controller";
 import { EmailValidator } from "@/api/protocols/email-validator";
 import { MissingParamError } from "../../errors/missing-params-error";
@@ -33,10 +32,7 @@ export class SignUpController implements Controller {
 				body: 'To refactor'
 			}
 		} catch (error) {
-			return {
-				statusCode: 500,
-				body: new ServerError()
-			}
+			return serverError()
 		}
 	}
 }

@@ -1,5 +1,4 @@
-import { InvalidParamError } from '@/api/errors/invalid-params-error'
-import { ServerError } from '@/api/errors/server-error'
+import { InvalidParamError, ServerError } from '@/api/errors'
 import { EmailValidator } from '@/api/protocols/email-validator'
 import { SignUpController } from './signup'
 

@@ -1,9 +1,12 @@
 import { InvalidParamError } from "@/api/errors/invalid-params-error";
 import { badRequest, serverError } from "@/api/helpers/http-helpers";
-import { Controller } from "@/api/protocols/controller";
-import { EmailValidator } from "@/api/protocols/email-validator";
+import {
+	Controller,
+	EmailValidator,
+	HttpRequest,
+	HttpResponse
+} from "../../protocols";
 import { MissingParamError } from "../../errors/missing-params-error";
-import { HttpRequest, HttpResponse } from "../../protocols/http";
 
 export class SignUpController implements Controller {
 

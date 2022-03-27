@@ -4,6 +4,9 @@
   "author": "Henrique P. Rosa",
   "main": "index.js",
   "scripts": {
+    "prepare": "husky install",
+		"lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "test": "jest --no-cache --runInBand",
     "test:watch": "npm test -- --watch",
@@ -21,6 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "eslint": "^8.11.0",
+    "husky": "^7.0.4",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
     "lint-staged": "^12.3.7",

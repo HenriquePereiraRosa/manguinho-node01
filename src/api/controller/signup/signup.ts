@@ -1,13 +1,13 @@
 import { InvalidParamError } from "@/api/errors/invalid-params-error";
 import { badRequest, serverError } from "@/api/helpers/http-helpers";
+import { AddAccount } from "@/domain/usecases/add-account";
+import { MissingParamError } from "../../errors/missing-params-error";
 import {
 	Controller,
-	EmailValidator,
 	HttpRequest,
 	HttpResponse
 } from "../../protocols";
-import { MissingParamError } from "../../errors/missing-params-error";
-import { AddAccount } from "@/domain/usecases/add-account";
+import { EmailValidator } from "./signup-protocols/email-validator";
 
 export class SignUpController implements Controller {
 

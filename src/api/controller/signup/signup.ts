@@ -7,18 +7,20 @@ import {
 	HttpResponse
 } from "../../protocols";
 import { MissingParamError } from "../../errors/missing-params-error";
+import { AddAccount } from "@/domain/usecases/add-account";
 
 export class SignUpController implements Controller {
 
 	constructor(
-		private readonly emailValidator: EmailValidator
+		private readonly emailValidator: EmailValidator,
+		private readonly addAccount: AddAccount
 	) { }
 
 
 	exec(req: HttpRequest): HttpResponse {
 		try {
-			const { email, pwd, pwdConfirmation } = req.body;
-			const requiredFields = ['email', 'pwd', 'pwdConfirmation']
+			const { name, email, pwd, pwdConfirmation } = req.body;
+			const requiredFields = ['name', 'email', 'pwd', 'pwdConfirmation']
 
 			for (const field of requiredFields) {
 				if (!req.body[field]) {
@@ -29,6 +31,12 @@ export class SignUpController implements Controller {
 			if (!this.emailValidator.isValid(email)) {
 				return badRequest(new InvalidParamError('email'))
 			}
+
+			this.addAccount.add({
+				name,
+				email,
+				pwd
+			})
 
 			return {
 				statusCode: 200,

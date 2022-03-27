@@ -1,18 +1,23 @@
 import { InvalidParamError, ServerError } from '@/api/errors'
 import { EmailValidator } from '@/api/protocols'
+import { AddAccount, AddAccountModel } from '@/domain/usecases/add-account'
+import { AccountModel } from '@/domain/usecases/models/account'
 import { SignUpController } from './signup'
 
 interface SutTypes {
 	sut: SignUpController,
-	emailValidatorStub: EmailValidator
+	emailValidatorStub: EmailValidator,
+	addAccountStub: AddAccount
 }
 
 const makeSut = (): SutTypes => {
 	const emailValidatorStub = makeEmailValidator()
-	const sut = new SignUpController(emailValidatorStub)
+	const addAccountStub = makeAddAccount()
+	const sut = new SignUpController(emailValidatorStub, addAccountStub)
 	return {
 		sut,
-		emailValidatorStub
+		emailValidatorStub,
+		addAccountStub
 	}
 }
 
@@ -34,12 +39,28 @@ const makeEmailValidatorWithError = (): EmailValidator => {
 	return new EmailValidatorStub()
 }
 
+const makeAddAccount = (): AddAccount => {
+	class AddAccountStub implements AddAccount {
+		add(account: AddAccountModel): AccountModel {
+			const fakeAccount = {
+				id: 'valid_id',
+				name: 'valid_name',
+				email: 'valid_email@server.com',
+				pwd: 'valid_pwd'
+			}
+			return fakeAccount
+		}
+	}
+	return new AddAccountStub()
+}
+
 
 describe('Signup Controller', () => {
 	it('Should return 400 if no email is provided', () => {
 		const { sut } = makeSut()
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				pwd: '1234@56',
 				pwdConfimation: '1234@56'
 			}
@@ -56,6 +77,7 @@ describe('Signup Controller', () => {
 		const { sut } = makeSut()
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'any_email@server.com',
 				pwdConfimation: '1234@56'
 			}
@@ -72,6 +94,7 @@ describe('Signup Controller', () => {
 		const { sut } = makeSut()
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'any_email@server.com',
 				pwd: '1234@56',
 			}
@@ -91,6 +114,7 @@ describe('Signup Controller', () => {
 
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'invalid_email@',
 				pwd: '1234@56',
 				pwdConfirmation: '1234@56',
@@ -109,6 +133,7 @@ describe('Signup Controller', () => {
 		const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'correct_email@server.com',
 				pwd: '1234@56',
 				pwdConfirmation: '1234@56',
@@ -125,9 +150,11 @@ describe('Signup Controller', () => {
 	it('Should return 500 if EmailValidator throws', () => {
 
 		const emailValidatorStub = makeEmailValidatorWithError()
-		const sut = new SignUpController(emailValidatorStub)
+		const addAccountStub = makeAddAccount()
+		const sut = new SignUpController(emailValidatorStub, addAccountStub)
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'correct_email@server.com',
 				pwd: '1234@56',
 				pwdConfirmation: '1234@56',
@@ -149,6 +176,7 @@ describe('Signup Controller', () => {
 			})
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'correct_email@server.com',
 				pwd: '1234@56',
 				pwdConfirmation: '1234@56',
@@ -161,11 +189,36 @@ describe('Signup Controller', () => {
 })
 
 
+
+describe('Signup Controller', () => {
+	it('Should call AddAccount with correct values', () => {
+		const { sut, addAccountStub } = makeSut()
+		const addSpy = jest.spyOn(addAccountStub, 'add')
+		const httpRequest = {
+			body: {
+				name: 'any_name',
+				email: 'correct_email@server.com',
+				pwd: '1234@56',
+				pwdConfirmation: '1234@56',
+			}
+		}
+		const httpResponse = sut.exec(httpRequest)
+		expect(httpResponse.statusCode).toBe(200)
+		expect(addSpy).toBeCalledWith({
+			name: 'any_name',
+			email: 'correct_email@server.com',
+			pwd: '1234@56',
+		})
+	})
+})
+
+
 describe('Signup Controller', () => {
 	it('Should return 200 if all params are provided', () => {
 		const { sut } = makeSut()
 		const httpRequest = {
 			body: {
+				name: 'any_name',
 				email: 'any_email@server.com',
 				pwd: '1234@56',
 				pwdConfirmation: '1234@56',

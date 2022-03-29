@@ -17,7 +17,7 @@ export class SignUpController implements Controller {
   ) { }
 
 
-  exec(req: HttpRequest): HttpResponse {
+  async exec(req: HttpRequest): Promise<HttpResponse> {
     try {
       const { name, email, pwd, pwdConfirmation } = req.body;
       const requiredFields = ['name', 'email', 'pwd', 'pwdConfirmation']
@@ -35,7 +35,7 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      const account = this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         pwd

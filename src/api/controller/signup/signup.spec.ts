@@ -2,7 +2,7 @@ import { InvalidParamError, ServerError } from '@/api/errors'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/add-account'
 import { AccountModel } from '@/domain/usecases/models/account'
 import { SignUpController } from './signup'
-import { EmailValidator } from './signup-protocols/email-validator'
+import { EmailValidator } from './signup-protocols'
 
 interface SutTypes {
 	sut: SignUpController,

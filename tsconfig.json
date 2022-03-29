@@ -1,9 +1,13 @@
 {
 	"compilerOptions": {
+    "incremental": true,
 		"outDir": "dist",
-		"rootDir": "src",
+    "rootDirs": ["src", "tests"],
 		"module": "commonjs", // disable need of .js/.ts on imports
+    "moduleResolution": "node",
 		"target": "es2021",
+    "sourceMap": true,
+    "skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowJs": true,
 		// "forceConsistentCasingInFileNames": true, // imports have to match in CamelCase including
@@ -20,5 +24,5 @@
 			"@/tests/*": ["../tests/*"]
 		}
 	},
-	"include": ["src"]
+  "include": ["src", "tests"]
 }

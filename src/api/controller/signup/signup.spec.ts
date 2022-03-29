@@ -107,6 +107,24 @@ describe('Signup Controller', () => {
 
 
 describe('Signup Controller', () => {
+  it('Should return 400 if no pwdConfirmation and pwd doesn\'t match', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@server.com',
+        pwd: '1234@56',
+        pwdConfirmation: '1234',
+      }
+    }
+    const httpResponse = sut.exec(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('pwdConfirmation'))
+  })
+})
+
+
+describe('Signup Controller', () => {
   it('Should return 400 if email is invalid', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid')

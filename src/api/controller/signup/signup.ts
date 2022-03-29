@@ -28,6 +28,9 @@ export class SignUpController implements Controller {
         }
       }
 
+      if (pwd !== pwdConfirmation) {
+        return badRequest(new InvalidParamError('pwdConfirmation'))
+      }
       if (!this.emailValidator.isValid(email)) {
         return badRequest(new InvalidParamError('email'))
       }

@@ -1,13 +1,13 @@
-import { InvalidParamError } from "@/api/errors/invalid-params-error";
-import { badRequest, serverError } from "@/api/helpers/http-helpers";
-import { AddAccount } from "@/domain/usecases/add-account";
-import { MissingParamError } from "../../errors/missing-params-error";
+import { InvalidParamError } from "@/api/errors/invalid-params-error"
+import { badRequest, serverError } from "@/api/helpers/http-helpers"
+import { AddAccount } from "@/domain/usecases/add-account"
+import { MissingParamError } from "../../errors/missing-params-error"
 import {
   Controller,
   HttpRequest,
   HttpResponse
-} from "../../protocols";
-import { EmailValidator } from "./signup-protocols/email-validator";
+} from "../../protocols"
+import { EmailValidator } from "./signup-protocols/email-validator"
 
 export class SignUpController implements Controller {
 
@@ -35,7 +35,7 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      this.addAccount.add({
+      const account = this.addAccount.add({
         name,
         email,
         pwd
@@ -43,7 +43,7 @@ export class SignUpController implements Controller {
 
       return {
         statusCode: 200,
-        body: 'To refactor'
+        body: account
       }
     } catch (error) {
       return serverError()

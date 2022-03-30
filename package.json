@@ -9,6 +9,7 @@
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "test": "jest --no-cache --runInBand",
+    "test:silent": "jest --silent --noStackTrace",
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "build": "npm run clean && tsc",
